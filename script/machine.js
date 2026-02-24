@@ -1,6 +1,7 @@
 // Elements and global variables for counting jobs
 const countInterviewElement = document.getElementById("count-interview");
 const countRejectedElement = document.getElementById("count-rejected");
+const emptyState = document.getElementById("empty-state");
 
 // update counts when loaded
 document.addEventListener("DOMContentLoaded", function () {
@@ -36,7 +37,7 @@ const updateCountType = function (filter) {
     } else {
         countTypeItem.style.display = "block";
         countType.textContent = count;
-        if (document.querySelectorAll(`#jobs-container .${filter}`).length === 0) {
+         if (document.querySelectorAll(`#jobs-container .${filter}`).length === 0) {
             emptyState.style.display = "block";
         }
         else {
@@ -56,7 +57,7 @@ document.addEventListener("click", function (d) {
         jobCard.remove();
         updateJobCounts();
 
-
+      
 
         if (jobCard.classList.contains("interview")) {
             updateTypeCount(countInterviewElement, -1);
@@ -67,7 +68,7 @@ document.addEventListener("click", function (d) {
             const filter = document.querySelector(".nav-item.active").dataset.filter
             updateCountType(filter);
         } else {
-            if (document.querySelectorAll(`#jobs-container .card-job`).length === 0) {
+            if(document.querySelectorAll(`#jobs-container .card-job`).length === 0) {
                 emptyState.style.display = "block";
             }
         }
@@ -231,4 +232,3 @@ nav.addEventListener("click", function (e) {
 
     updateCountType(filter);
 });
-
