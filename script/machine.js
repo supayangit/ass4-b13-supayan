@@ -15,3 +15,158 @@ const updateJobCounts = function () {
     countJobs.textContent = totalJobsCount;
     countTotalJobs.textContent = totalJobsCount;
 };
+
+// update interviews and reject counts
+const updateTypeCount = function (countElement, value) {
+    // console.log(countElement, value);
+    let countValue = parseInt(countElement.innerText) + value;
+    // console.log(countValue);
+    countElement.innerText = countValue;
+    // console.log(`Updated count: ${countElement.innerText}`);
+
+};
+
+// update count type in header
+const updateCountType = function (filter) {
+    const countType = document.getElementById("count-type");
+    const count = jobContainer.querySelectorAll(`.card-job.${filter}`).length;
+
+    if (filter === "all") {
+        countTypeItem.style.display = "none";
+    } else {
+        countTypeItem.style.display = "block";
+        countType.textContent = count;
+         if (document.querySelectorAll(`#jobs-container .${filter}`).length === 0) {
+            emptyState.style.display = "block";
+        }
+        else {
+            emptyState.style.display = "none";
+        }
+    }
+};
+
+// actions for buttons in each job card
+// delete button action
+document.addEventListener("click", function (d) {
+    const deleteBtn = d.target.closest(".btn-delete");
+    if (!deleteBtn) return;
+
+    const jobCard = deleteBtn.closest(".card-job");
+    if (jobCard) {
+        jobCard.remove();
+        updateJobCounts();
+
+      
+
+        if (jobCard.classList.contains("interview")) {
+            updateTypeCount(countInterviewElement, -1);
+            const filter = document.querySelector(".nav-item.active").dataset.filter
+            updateCountType(filter);
+        } else if (jobCard.classList.contains("reject")) {
+            updateTypeCount(countRejectedElement, -1);
+            const filter = document.querySelector(".nav-item.active").dataset.filter
+            updateCountType(filter);
+        } else {
+            if(document.querySelectorAll(`#jobs-container .card-job`).length === 0) {
+                emptyState.style.display = "block";
+            }
+        }
+    }
+
+    console.log(`Delete button clicked`);
+});
+
+// Event delegation for interview and reject buttons
+// clicking the interview button
+document.addEventListener("click", function (i) {
+    const interviewBtn = i.target.closest(".btn-interview");
+    if (!interviewBtn) return;
+    const jobCard = interviewBtn.closest(".card-job");
+    const stateBtn = jobCard.querySelector(".btn-state");
+    let isSwitch = false;
+    otherBtn = null;
+    if (jobCard) {
+        if (jobCard.classList.contains("interview")) {
+            return;
+        } else if (jobCard.classList.contains("reject")) {
+            jobCard.classList.remove("reject");
+            updateTypeCount(countRejectedElement, -1);
+            isSwitch = true;
+            otherBtn = jobCard.querySelector(".btn-reject");
+            otherBtn.classList.remove("btn-disabled");
+        }
+        jobCard.classList.add("interview");
+        updateTypeCount(countInterviewElement, +1);
+        console.log(`Interview button clicked`);
+        updateButtons(jobCard, interviewBtn, stateBtn, isSwitch, otherBtn);
+        updateCountType(document.querySelector(".nav-item.active").dataset.filter);
+
+        if (document.querySelector(".nav-item.active").dataset.filter === "reject") {
+            jobCard.style.display = "none";
+        }
+    }
+});
+
+// clicking the reject button
+document.addEventListener("click", function (r) {
+    const rejectBtn = r.target.closest(".btn-reject");
+    if (!rejectBtn) return;
+    const jobCard = rejectBtn.closest(".card-job");
+    const stateBtn = jobCard.querySelector(".btn-state");
+    let isSwitch = false;
+    otherBtn = null;
+    if (jobCard) {
+        if (jobCard.classList.contains("reject")) {
+            return;
+        } else if (jobCard.classList.contains("interview")) {
+            jobCard.classList.remove("interview");
+            updateTypeCount(countInterviewElement, -1);
+            isSwitch = true;
+            otherBtn = jobCard.querySelector(".btn-interview");
+            otherBtn.classList.remove("btn-disabled");
+        }
+        jobCard.classList.add("reject");
+        updateTypeCount(countRejectedElement, +1);
+        console.log(`Reject button clicked`);
+        updateButtons(jobCard, rejectBtn, stateBtn, isSwitch, otherBtn);
+        updateCountType(document.querySelector(".nav-item.active").dataset.filter);
+
+        if (document.querySelector(".nav-item.active").dataset.filter === "interview") {
+            jobCard.style.display = "none";
+        }
+    }
+});
+
+
+// update the clicked buttons
+const updateButtons = function (passedJobCard, passedBtn, stateBtn, isSwitch = false, otherBtn = null) {
+    if (passedJobCard.classList.contains("interview")) {
+        passedBtn.textContent = "Interviewing";
+        if (isSwitch && otherBtn) {
+            otherBtn.textContent = "Reject";
+        }
+        const newStateBtn = passedBtn.cloneNode(true);
+        stateBtn.replaceWith(newStateBtn);
+        newStateBtn.textContent = "Interviewing";
+        newStateBtn.classList.remove("btn-interview");
+        newStateBtn.classList.add("btn-state");
+        newStateBtn.style.pointerEvents = "none";
+        passedBtn.classList.add("btn-disabled");
+    } else
+
+        if (passedJobCard.classList.contains("reject")) {
+            passedBtn.textContent = "Rejected";
+            if (isSwitch && otherBtn) {
+                otherBtn.textContent = "Interview";
+            }
+            const newStateBtn = passedBtn.cloneNode(true);
+            stateBtn.replaceWith(newStateBtn);
+            newStateBtn.textContent = "Rejected";
+            newStateBtn.classList.remove("btn-reject");
+            newStateBtn.classList.add("btn-state");
+            newStateBtn.style.pointerEvents = "none";
+            passedBtn.classList.add("btn-disabled");
+        } else {
+            passedBtn.textContent = passedBtn.classList.contains("btn-interview") ? "Interview" : "Reject";
+        }
+};
