@@ -3,7 +3,7 @@ const countInterviewElement = document.getElementById("count-interview");
 const countRejectedElement = document.getElementById("count-rejected");
 
 // update counts when loaded
- document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     updateJobCounts();
 });
 
@@ -36,7 +36,7 @@ const updateCountType = function (filter) {
     } else {
         countTypeItem.style.display = "block";
         countType.textContent = count;
-         if (document.querySelectorAll(`#jobs-container .${filter}`).length === 0) {
+        if (document.querySelectorAll(`#jobs-container .${filter}`).length === 0) {
             emptyState.style.display = "block";
         }
         else {
@@ -56,7 +56,7 @@ document.addEventListener("click", function (d) {
         jobCard.remove();
         updateJobCounts();
 
-      
+
 
         if (jobCard.classList.contains("interview")) {
             updateTypeCount(countInterviewElement, -1);
@@ -67,7 +67,7 @@ document.addEventListener("click", function (d) {
             const filter = document.querySelector(".nav-item.active").dataset.filter
             updateCountType(filter);
         } else {
-            if(document.querySelectorAll(`#jobs-container .card-job`).length === 0) {
+            if (document.querySelectorAll(`#jobs-container .card-job`).length === 0) {
                 emptyState.style.display = "block";
             }
         }
@@ -137,7 +137,6 @@ document.addEventListener("click", function (r) {
     }
 });
 
-
 // update the clicked buttons
 const updateButtons = function (passedJobCard, passedBtn, stateBtn, isSwitch = false, otherBtn = null) {
     if (passedJobCard.classList.contains("interview")) {
@@ -170,3 +169,66 @@ const updateButtons = function (passedJobCard, passedBtn, stateBtn, isSwitch = f
             passedBtn.textContent = passedBtn.classList.contains("btn-interview") ? "Interview" : "Reject";
         }
 };
+
+// navs actions
+// show only filtered jobs
+const nav = document.getElementById("navs-box");
+const jobContainer = document.getElementById("jobs-container");
+const countTypeItem = document.getElementById("count-type-item");
+
+nav.addEventListener("click", function (e) {
+    const navItem = e.target.closest(".nav-item");
+    if (!navItem) return;
+
+    const filter = navItem.dataset.filter;
+
+    if (navItem.classList.contains("active")) return;
+
+    document.querySelectorAll(".nav-item")
+        .forEach(item => item.classList.remove("active"));
+
+    navItem.classList.add("active");
+
+    const jobCards = jobContainer.getElementsByClassName("card-job");
+    const emptyState = document.getElementById("empty-state");
+
+    let visibleCount = 0;
+
+    for (let card of jobCards) {
+
+        // show all jobs
+        if (filter === "all") {
+            card.style.display = "block";
+            visibleCount++;
+        }
+
+        // show only interview jobs
+        else if (filter === "interview") {
+            if (card.classList.contains("interview")) {
+                card.style.display = "block";
+                visibleCount++;
+            } else {
+                card.style.display = "none";
+            }
+        }
+
+        // show only rejected jobs
+        else if (filter === "reject") {
+            if (card.classList.contains("reject")) {
+                card.style.display = "block";
+                visibleCount++;
+            } else {
+                card.style.display = "none";
+            }
+        }
+    }
+
+    if (visibleCount === 0) {
+        emptyState.style.display = "block";
+    } else {
+        emptyState.style.display = "none";
+    }
+
+    updateCountType(filter);
+});
+
