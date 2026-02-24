@@ -87,7 +87,74 @@
     </section>
 
     <hr class="mt-[20px] sm:mt-[30px] mb-[20px] sm:mb-[30px] border-t-[1px] border-gray-300">
-    
+    <!-- jobs section -->
+    <section id="jobs-section" class="w-full">
+        <!-- jobs header and nav -->
+        <div id="job-stats" class="sticky top-0 z-40 py-[12px] bg-gray-100">
+            <div id="jobs-header" class="w-full flex justify-between mb-[4px]">
+                <h3 class="font-semibold text-[16px] sm:text-[20px] w-fit">Available Jobs</h3>
+                <div id="count-jobs-box" class="font-medium text-gray-500 flex gap-[2px] sm:gap-[4px]">
+                    <div id="count-type-item" style="display: none;">
+                        <span id="count-type">0</span> of
+                    </div>
+                    <span id="count-jobs">0</span> jobs
+                </div>
+            </div>
+
+            <div>
+                <ul id="navs-box" class="rounded-box gap-[4px] sm:gap-[8px]">
+                    <li data-filter="all" class="active nav-item"><a>All</a></li>
+                    <li data-filter="interview" class="nav-item"><a>Interview</a></li>
+                    <li data-filter="reject" class="nav-item"><a>Rejected</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- jobs container -->
+        <div id="jobs-container" class="mt-[12px] sm:mt-[16px] space-y-[12px] sm:space-y-[16px]">
+            <!-- 1 -->
+            <div
+                class="card-job p-[16px] sm:p-[24px] border border-[#F1F2F4] bg-white rounded-[8px] flex flex-col gap-[12px] sm:gap-[18px]">
+
+                <div class="flex justify-between">
+                    <div>
+                        <h3 class="text-[16px] sm:text-[18px] font-semibold mt-[0]">Nexora Technologies</h3>
+                        <p class="text-[14px] sm:text-[16px] text-gray-500">Frontend Developer</p>
+                    </div>
+                    <div
+                        class="btn-delete border border-gray-300 rounded-full flex items-center w-[28px] sm:w-[32px] h-[28px] sm:h-[32px] justify-center cursor-pointer">
+                        <i class="fa-regular fa-trash-can text-[11px] sm:text-[13px] text-gray-400"></i>
+                    </div>
+                </div>
+
+                <div class="text-[12px] sm:text-[14px] text-gray-500">
+                    <span>Dhaka, Bangladesh</span> •
+                    <span>Full-time</span> •
+                    <span>$70,000 - $85,000</span>
+                </div>
+
+                <div>
+                    <button
+                        class="btn-state w-full sm:w-fit btn btn-soft bg-[#EEF4FF] border-[0] mb-[2px] sm:mb-[4px] text-gray-700 font-medium text-[12px] sm:text-[14px]">NOT
+                        APPLIED</button>
+                    <p class="text-[12px] sm:text-[14px] text-gray-700">
+                        Build responsive web interfaces using React and Tailwind CSS.
+                        Collaborate with backend team to integrate REST APIs.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-[4px] sm:gap-[8px]">
+                    <button
+                        class="btn btn-outline btn-success btn-interview text-[12px] sm:text-[14px] w-full sm:w-auto">INTERVIEW</button>
+                    <button
+                        class="btn btn-outline btn-error btn-reject text-[12px] sm:text-[14px] w-full sm:w-auto">REJECT</button>
+                </div>
+            </div>
+
+           
+
+        </div>
+
+    </section>
 
     <!-- script link -->
     <script src="script/machine.js"></script>
